@@ -10,3 +10,5 @@ tech-learning example
   * split out react and react-dom
 4. dynamic
   * load react-syntax-highlighter asynchronously
+5. nuclear
+  * split every node module
