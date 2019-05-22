@@ -26,7 +26,8 @@ const DevPlugins = [
 
 const ProdPlugins = [
   DefinePluginConfig,
-  new CleanWebpackPlugin()
+  new CleanWebpackPlugin(),
+  new webpack.HashedModuleIdsPlugin()
 ];
 
 const CommonPlugins = [
@@ -73,9 +74,19 @@ module.exports = {
     historyApiFallback: true,
   },
   mode: dev ? 'development' : 'production',
-  optimization: !dev ? {
+  optimization: {
     minimize: false,
-  } : {},
+    runtimeChunk: 'single',
+    splitChunks: {
+      cacheGroups: {
+        vendor: {
+          test: /[\\/]node_modules[\\/]/,
+          name: 'vendors',
+          chunks: 'all'
+        }
+      }
+    }
+  },
   plugins: dev
     ? DevPlugins.concat(CommonPlugins)
     : ProdPlugins.concat(CommonPlugins)
