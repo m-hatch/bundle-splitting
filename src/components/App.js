@@ -2,7 +2,7 @@ import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 import Navigation from './Navigation';
 import Home from './Home';
-import Blog from './Blog';
+import BlogAsync from './BlogAsync';
 
 const App = () => {
   return (
@@ -10,7 +10,7 @@ const App = () => {
       <Navigation />
       <Switch>
         <Route exact path='/' component={Home}/>
-        <Route path='/blog' component={Blog}/>
+        <Route path='/blog' component={BlogAsync}/>
       </Switch>
     </div>
   );

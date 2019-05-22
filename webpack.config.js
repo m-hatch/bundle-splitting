@@ -26,7 +26,8 @@ const DevPlugins = [
 
 const ProdPlugins = [
   DefinePluginConfig,
-  new CleanWebpackPlugin()
+  new CleanWebpackPlugin(),
+  new webpack.HashedModuleIdsPlugin()
 ];
 
 const CommonPlugins = [
@@ -60,6 +61,9 @@ module.exports = {
     filename: dev 
       ? '[name].bundle.[hash].js'
       : '[name].bundle.[contenthash].js',
+    chunkFilename: dev 
+      ? '[name].bundle.[hash].js'
+      : '[name].bundle.[contenthash].js',
     publicPath: '/'
   },
   devServer: {
@@ -73,9 +77,13 @@ module.exports = {
     historyApiFallback: true,
   },
   mode: dev ? 'development' : 'production',
-  optimization: !dev ? {
+  optimization: {
     minimize: false,
-  } : {},
+    runtimeChunk: 'single',
+    splitChunks: {
+      chunks: "initial",
+    }
+  },
   plugins: dev
     ? DevPlugins.concat(CommonPlugins)
     : ProdPlugins.concat(CommonPlugins)
