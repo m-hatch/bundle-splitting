@@ -26,7 +26,8 @@ const DevPlugins = [
 
 const ProdPlugins = [
   DefinePluginConfig,
-  new CleanWebpackPlugin()
+  new CleanWebpackPlugin(),
+  new webpack.HashedModuleIdsPlugin()
 ];
 
 const CommonPlugins = [
@@ -73,9 +74,27 @@ module.exports = {
     historyApiFallback: true,
   },
   mode: dev ? 'development' : 'production',
-  optimization: !dev ? {
+  optimization: {
     minimize: false,
-  } : {},
+    runtimeChunk: 'single',
+    splitChunks: {
+      chunks: 'all',
+      maxInitialRequests: Infinity,
+      minSize: 0,
+      cacheGroups: {
+        vendor: {
+          test: /[\\/]node_modules[\\/]/,
+          name(module) {
+            // get the name. e.g. node_modules/packageName/not/this/part.js
+            const packageName = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1];
+
+            // npm package names are URL-safe, but some servers don't like @ symbols
+            return `npm.${packageName.replace('@', '')}`;
+          }
+        }
+      }
+    }
+  },
   plugins: dev
     ? DevPlugins.concat(CommonPlugins)
     : ProdPlugins.concat(CommonPlugins)
