@@ -15,10 +15,13 @@ class BlogAsync extends PureComponent {
   }
 
   componentDidMount() {
-    import(/* webpackChunkName: "highlighter" */ 'react-syntax-highlighter')
-      .then(module => {
-        this.setState({ SyntaxHighlighter: module.default });
-      });
+    import(
+      /* webpackPrefetch: true */
+      /* webpackChunkName: "highlighter" */
+      'react-syntax-highlighter'
+    ).then(module => {
+      this.setState({ SyntaxHighlighter: module.default });
+    });
   }
 
   render() {

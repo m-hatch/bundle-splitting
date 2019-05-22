@@ -61,7 +61,7 @@ module.exports = {
     filename: dev 
       ? '[name].bundle.[hash].js'
       : '[name].bundle.[contenthash].js',
-    chunkFilename: dev 
+    chunkFilename: dev
       ? '[name].bundle.[hash].js'
       : '[name].bundle.[contenthash].js',
     publicPath: '/'
