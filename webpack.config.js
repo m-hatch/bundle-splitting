@@ -81,7 +81,41 @@ module.exports = {
     minimize: false,
     runtimeChunk: 'single',
     splitChunks: {
-      chunks: "initial",
+      cacheGroups: {
+        react: {
+          test: /[\\/]node_modules[\\/](react|react-dom)[\\/]/,
+          name: 'react',
+          chunks: 'all'
+        },
+        highlighter: {
+          test: /[\\/]node_modules[\\/](react-syntax-highlighter)[\\/]/,
+          name: 'highlighter',
+          chunks: 'async'
+        },
+        vendor: {
+          test(mod) {
+            // exclude anything outside node modules
+            if (!mod.context.includes('node_modules')) {
+              return false;
+            }
+
+            // exclude react and react-dom
+            if (/[\\/]node_modules[\\/](react|react-dom)[\\/]/.test(mod.context)) {
+              return false;
+            }
+
+            // exclude react-syntax-highlighter
+            if (/[\\/]node_modules[\\/](react-syntax-highlighter)[\\/]/.test(mod.context)) {
+              return false;
+            }
+
+            // return all other node modules
+            return true;
+          },
+          name: 'vendors',
+          chunks: 'all'
+        }
+      }
     }
   },
   plugins: dev
